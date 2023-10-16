@@ -33,7 +33,7 @@ def param_checker(params):
 if __name__ == "__main__":
     params = dict()
     # Ture: recolor by transferring another image color, False: recolor by color theme
-    params['recolor_by_transfer'] = True
+    params['recolor_by_transfer'] = False
     params['recolor_transfer_file'] = "./transfer/7.png"
     # how many color will be extracted from the transfer file
     params['recolor_transfer_k'] = 30
