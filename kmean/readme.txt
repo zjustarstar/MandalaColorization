@@ -1,0 +1,1 @@
+kmeans算法参考论文: Palette-based photo recoloring-siggraph 2015
