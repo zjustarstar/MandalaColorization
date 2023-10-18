@@ -8,11 +8,12 @@ import time
 import get_color_theme as gct
 
 
-def find_similar_regions_byrect(img, bi_img):
+def find_similar_regions_byrect(img, bi_img, pattern_style):
     '''
     利用联通区域最小外接矩形相似性查找相同区域
     :param img: 原图
     :param bi_img: 二值图
+    :param pattern_style: 表示线框图的对称模式. C表示中心对称， NC表示非中心对称
     :return: 用于标示每个像素所属的联通区域编号label，且与原图img相同尺寸的矩阵
     '''
     num_labels, labels, stats, centroids = cv2.connectedComponentsWithStats(bi_img, connectivity=8)
@@ -57,7 +58,12 @@ def find_similar_regions_byrect(img, bi_img):
             # 如果两个外接rect相似, 则赋予相同的标签号;
             center_xy2, w2, h2 = region_info[j]
             dist = abs(center_xy1 - center_xy2)
-            if max(abs(w1-w2),abs(h1-h2)) < thresh_size and dist < thresh_dist:
+            # 如果是圆环状线稿图，考虑离中心点的距离是相近的
+            if pattern_style == 'C':
+                cond = max(abs(w1-w2),abs(h1-h2)) < thresh_size and dist < thresh_dist
+            else:
+                cond = max(abs(w1 - w2), abs(h1 - h2)) < thresh_size
+            if cond:
                 new_labels[labels == j] = i
                 flag_num_labels[j] = False
 
@@ -184,7 +190,8 @@ def colorization_main(filename, params):
 
     # 查找相似的区域
     print("start to extract region info")
-    num_labels, labels, region_info = find_similar_regions_byrect(img, bi_img)
+    style = params['recolor_sketch_style']
+    num_labels, labels, region_info = find_similar_regions_byrect(img, bi_img, style)
     print("total regions={0}".format(num_labels))
 
     # 去掉重复编号以后，所有区域的编号

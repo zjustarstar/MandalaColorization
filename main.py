@@ -33,16 +33,18 @@ def param_checker(params):
 if __name__ == "__main__":
     params = dict()
     # Ture: recolor by transferring another image color, False: recolor by color theme
-    params['recolor_by_transfer'] = False
-    params['recolor_transfer_file'] = "./transfer/7.png"
+    params['recolor_by_transfer'] = True
+    params['recolor_transfer_file'] = "./transfer/1017_1.png"
     # how many color will be extracted from the transfer file
-    params['recolor_transfer_k'] = 30
+    params['recolor_transfer_k'] = 54
     # recolor by color theme: read color theme from excel file
     params['recolor_colortheme_file'] = 'ColorTheme.xlsx'
     # path for saving recolored image. will auto-created if this fold does not exist.
     params['output_path'] = "result"
+    # In default, C=Circle。NC means non-circle shape.
+    params['recolor_sketch_style'] = 'NC'
     # pdf file for recoloring
-    params['recolor_targetpdf'] = "./testpdf/zzx_2023_09_15_08_29origin.pdf"
+    params['recolor_targetpdf'] = "./testpdf/d2a5d2b84214ff60d7116a6df25ed1a4.pdf"
 
     # check validity of params
     if not param_checker(params):

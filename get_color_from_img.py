@@ -19,7 +19,12 @@ def get_bigger_palette_to_show(palette):
 
 
 def get_palette_from_img_by_kmeans(filename, k, debug=False):
-    image = Image.open(filename).convert('RGB')
+    image = Image.open(filename)
+    if image.mode == 'P' or image.mode=='RGBA':
+        image = image.convert('RGBA')
+    else:
+        image = image.convert('RGB')
+
     image = image.resize((512, 512))
     if debug:
         image.show("image")
