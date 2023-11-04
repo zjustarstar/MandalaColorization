@@ -8,6 +8,17 @@ import time
 import get_color_theme as gct
 
 
+def show_connection_regions(img, labels, num_labels):
+    # 不同的连通域赋予不同的颜色
+    output = np.zeros((img.shape[0], img.shape[1], 3), np.uint8)
+    for i in range(1, num_labels):
+        mask = labels == i
+        output[:, :, 0][mask] = np.random.randint(0, 255)
+        output[:, :, 1][mask] = np.random.randint(0, 255)
+        output[:, :, 2][mask] = np.random.randint(0, 255)
+    cv2.imwrite("res.png", output)
+
+
 def find_similar_regions_byrect(img, bi_img, pattern_style):
     '''
     利用联通区域最小外接矩形相似性查找相同区域
@@ -157,7 +168,7 @@ def colorize_based_theme(color_theme, theme_size, theme_name, all_labels, img_la
             j = j + 1
         type = c_index // theme_size
         num = c_index % theme_size
-        filename = "color_" + str(theme_name[type]) + "_" + str(num) + ".jpg"
+        filename = "color_" + str(theme_name[type]) + "_" + str(num) + ".png"
         filename = os.path.join(save_path, filename)
         filename = os.path.join(os.getcwd(), filename)
         cv2.imwrite(filename, output)
